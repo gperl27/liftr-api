@@ -8,7 +8,7 @@ use App\User;
 
 class UsersController extends Controller
 {
-  protected function create_user(Request $request)
+  protected function create(Request $request)
   {
       return User::create([
           'name' => $request->name,

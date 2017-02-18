@@ -14,5 +14,13 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1' ], function(){
-  Route::post('/create_user', 'UsersController@create_user');
+ /*********
+  * Users *
+  *********/
+  Route::post('/create_user', 'UsersController@create');
+  /*********
+  * Workouts *
+  *********/
+  Route::post('/create_workout', 'WorkoutsController@create');
+
 });
