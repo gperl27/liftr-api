@@ -14,6 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1' ], function(){
+ /**********
+  * Auth *
+  *********/
+  Route::get('/get_authorized_user', 'AuthenticateController@getAuthenticatedUser');
+  Route::post('/authenticate', 'AuthenticateController@authenticate');
  /*********
   * Users *
   *********/
@@ -21,6 +26,7 @@ Route::group(['prefix' => 'v1' ], function(){
   /*********
   * Workouts *
   *********/
-  Route::post('/create_workout', 'WorkoutsController@create');
+  Route::post('/create_workout', 'WorkoutsController@create')->middleware('jwt.auth');
 
+  Route::resource('workout', 'WorkoutsController');
 });
