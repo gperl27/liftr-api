@@ -11,24 +11,13 @@ class WorkoutsController extends Controller
 {
   public function create(Request $request){
     // $this->validate($request, ['day' => 'required|string', 'week' => 'required|date']);
-    try {
-
-        if (! $user = JWTAuth::parseToken()->authenticate()) {
-            return response()->json(['user_not_found'], 404);
-        }
-
-    } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-        return response()->json(['token_expired'], $e->getStatusCode());
-
-    } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-        return response()->json(['token_invalid'], $e->getStatusCode());
-
-    } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-        return response()->json(['token_absent'], $e->getStatusCode());
+    if(! $user = JWTAuth::parseToken()->authenticate()){
+      return response()->json(['msg' => 'User not found!'], 404);
     }
+
+    // dd($user);
+    // no need to do this!
+    // $user = User::find($user->id);
 
     $user->workouts()->create($request->all());
     return $user->workouts()->get();
