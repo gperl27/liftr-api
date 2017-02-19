@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1' ], function(){
+
+  // Route::get('/', function(){
+  //   return 'Test me';
+  // })->middleware('jwt.auth');
  /**********
   * Auth *
   *********/
@@ -26,7 +30,9 @@ Route::group(['prefix' => 'v1' ], function(){
   /*********
   * Workouts *
   *********/
+  Route::get('/current_week', 'WorkoutsController@current_week');
+  Route::get('/workouts', 'WorkoutsController@index')->middleware('jwt.auth');
   Route::post('/create_workout', 'WorkoutsController@create')->middleware('jwt.auth');
 
-  Route::resource('workout', 'WorkoutsController');
+  // Route::resource('workout', 'WorkoutsController');
 });
