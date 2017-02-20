@@ -38,7 +38,7 @@ class AuthenticateController extends Controller
 
       } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 
-          return response()->json(['token_expired'], $e->getStatusCode());
+          return response()->json(['error' => 'token_expired'], $e->getStatusCode());
 
       } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
 

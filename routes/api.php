@@ -30,9 +30,14 @@ Route::group(['prefix' => 'v1' ], function(){
   /*********
   * Workouts *
   *********/
-  Route::get('/current_week', 'WorkoutsController@current_week');
+  Route::get('/current_workout/{date}', 'WorkoutsController@current_workout')->middleware('jwt.auth');
   Route::get('/workouts', 'WorkoutsController@index')->middleware('jwt.auth');
   Route::post('/create_workout', 'WorkoutsController@create')->middleware('jwt.auth');
+  Route::post('/delete_workout', 'WorkoutsController@destroy')->middleware('jwt.auth');
+  /*************
+   * Exercises *
+   *************/
+   Route::post('/destroy_exercise', 'ExercisesController@destroy')->middleware('jwt.auth');
 
-  // Route::resource('workout', 'WorkoutsController');
+
 });

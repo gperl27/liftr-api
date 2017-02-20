@@ -11,7 +11,8 @@ class Exercise extends Model
   protected $fillable = [
 		'name', 'weight', 'reps', 'sets'
 	];
-    public function workout(){
-    	return $this->belongsTo(Workout::class);
-    }
+
+  public function workout(){
+  	return $this->belongsTo(Workout::class);
+  }
 }
