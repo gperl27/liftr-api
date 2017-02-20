@@ -71,6 +71,11 @@ class ExercisesController extends Controller
      */
     public function update(Request $request, $id)
     {
+      $exercise = Exercise::find($id);
+      $workout_id = $exercise->workout->id;
+      $exercise->update($request->all());
+
+      return Workout::with('exercises')->find($workout_id);
     }
 
     /**
