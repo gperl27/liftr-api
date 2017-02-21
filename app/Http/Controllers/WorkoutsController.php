@@ -36,9 +36,11 @@ class WorkoutsController extends Controller
       return response()->json(['msg' => 'User not found!'], 404);
     }
     // $user = User::find(1);
-    $workout = $user->workouts()->with('exercises')->where('day', $date)->first();
 
-    return response()->json($workout);
+    // if($user->workouts()->where('day', $date)->exists()){
+      $workout = $user->workouts()->with('exercises')->where('day', $date)->first();
+      return response()->json($workout);
+    // }
   }
 
   public function delete($date){

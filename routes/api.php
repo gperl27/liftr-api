@@ -37,6 +37,7 @@ Route::group(['prefix' => 'v1' ], function(){
   /*************
    * Exercises *
    *************/
+   Route::post('/exercise/create', 'ExercisesController@create')->middleware('jwt.auth');
    Route::post('/exercise/{exercise_id}/update', 'ExercisesController@update')->middleware('jwt.auth');
    Route::post('/exercise/destroy', 'ExercisesController@destroy')->middleware('jwt.auth');
 

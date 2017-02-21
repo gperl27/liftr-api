@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
 use App\Exercise;
 use App\Workout;
 
@@ -24,21 +25,24 @@ class ExercisesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+      // if(! $user = JWTAuth::parseToken()->authenticate()){
+      //   return response()->json(['msg' => 'User not found!'], 404);
+      // }
+      //
+      $user = User::find(1);
+
+      if(!Workout::where('day', $request->date)->exists()){
+        $user->workouts()->create(['day' => $request->date]);
+      }
+
+      $workout = Workout::where('day', $request->date)->first();
+      $workout->exercises()->create($request->except('date'));
+
+      return Workout::with('exercises')->find($workout->id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
