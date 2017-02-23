@@ -10,7 +10,7 @@ use App\Exercise;
 class Workout extends Model
 {
   protected $fillable = [
-      'day'
+      'day', 'name'
   ];
   public function user(){
     return $this->belongsTo(User::class);

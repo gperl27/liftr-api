@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Workout;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -29,6 +30,13 @@ class WorkoutsController extends Controller
     }
 
     return $user->workouts;
+  }
+
+  public function update_name(Request $request){
+    Workout::find($request->id)->update(['name' => $request->name]);
+    $workout = Workout::with('exercises')->find($request->id);
+
+    return response()->json($workout);
   }
 
   public function current_workout($date){
