@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Exercise;
 use App\Workout;
+use JWTAuth;
 
 class ExercisesController extends Controller
 {
@@ -27,11 +28,9 @@ class ExercisesController extends Controller
      */
     public function create(Request $request)
     {
-      // if(! $user = JWTAuth::parseToken()->authenticate()){
-      //   return response()->json(['msg' => 'User not found!'], 404);
-      // }
-      //
-      $user = User::find(1);
+      if(! $user = JWTAuth::parseToken()->authenticate()){
+        return response()->json(['msg' => 'User not found!'], 404);
+      }
 
       if(!Workout::where('day', $request->date)->exists()){
         $user->workouts()->create(['day' => $request->date]);

@@ -11,17 +11,14 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 class WorkoutsController extends Controller
 {
   public function create(Request $request){
-    // $this->validate($request, ['day' => 'required|string', 'week' => 'required|date']);
     if(! $user = JWTAuth::parseToken()->authenticate()){
       return response()->json(['msg' => 'User not found!'], 404);
     }
 
-    // dd($user);
-    // no need to do this!
-    // $user = User::find($user->id);
+    $w = $user->workouts()->create($request->all());
+    $workout = Workout::with('exercises')->find($w->id);
 
-    $user->workouts()->create($request->all());
-    return $user->workouts()->get();
+    return response()->json(['workout' => $workout, 'workouts' => $user->workouts()->get()]);
   }
 
   public function index(){
@@ -51,6 +48,11 @@ class WorkoutsController extends Controller
 
     // if($user->workouts()->where('day', $date)->exists()){
       $workout = $user->workouts()->with('exercises')->where('day', $date)->first();
+    // } else {
+      // $workout = 'No workout today';
+      // $user->workouts()->create(['day' => $date]);
+      // $workout = $user->workouts()->with('exercises')->where('day', $date)->first();
+    // }
       return response()->json($workout);
     // }
   }
