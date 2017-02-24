@@ -36,7 +36,11 @@ class WorkoutsController extends Controller
     Workout::find($request->id)->update(['name' => $request->name]);
     $workout = Workout::with('exercises')->find($request->id);
 
-    return response()->json($workout);
+    if(! $user = JWTAuth::parseToken()->authenticate()){
+      return response()->json(['msg' => 'User not found!'], 404);
+    }
+
+    return response()->json(['workout' => $workout, 'workouts' => $user->workouts()->get()]);
   }
 
   public function current_workout($date){
