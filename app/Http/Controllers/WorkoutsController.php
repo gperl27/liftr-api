@@ -57,13 +57,18 @@ class WorkoutsController extends Controller
     // }
   }
 
-  public function delete($date){
+  public function destroy(Request $request){
     if(! $user = JWTAuth::parseToken()->authenticate()){
       return response()->json(['msg' => 'User not found!'], 404);
     }
-    // $user = User::find(1);
-    $workout = $user->workouts()->with('exercises')->where('day', $date)->first();
 
-    return response()->json($workout);
+    // may want to query using user in the future
+    Workout::find($request->workoutId)->delete();
+
+    // basically hardcoding empty object for now, will want to use dates
+    // in case of multiple workouts per day the future
+    $workout = (object) [];
+
+    return response()->json(['workout' => $workout, 'workouts' => $user->workouts()->get()]);
   }
 }
