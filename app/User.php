@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Workout;
+use App\Exercise;
 
 class User extends Authenticatable
 {
@@ -31,5 +32,9 @@ class User extends Authenticatable
 
     public function workouts(){
       return $this->hasMany(Workout::class);
+    }
+
+    public function exercises(){
+      return $this->hasManyThrough(Exercise::class, Workout::class);
     }
 }

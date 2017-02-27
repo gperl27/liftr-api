@@ -18,7 +18,17 @@ class ExercisesController extends Controller
      */
     public function index()
     {
-        //
+      // if(! $user = JWTAuth::parseToken()->authenticate()){
+      //   return response()->json(['msg' => 'User not found!'], 404);
+      // }
+      $user = User::find(1);
+
+      $exercises = Exercise::whereHas('workout', function($query) use ($user) {
+                                             $query->where('user_id' , $user->id); })
+                                            ->get();
+      // by name for now
+      $uniqueExercises = $exercises->unique('name')->values()->all();
+      return response()->json($uniqueExercises);
     }
 
     /**
@@ -49,9 +59,21 @@ class ExercisesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($name)
     {
-        //
+      if(! $user = JWTAuth::parseToken()->authenticate()){
+        return response()->json(['msg' => 'User not found!'], 404);
+      }
+
+      $currentExerciseStats = Exercise::with('workout')->where('name', $name)
+                                       ->whereHas('workout', function($query) use ($user) {
+                                         $query->where('user_id' , $user->id); })
+                                       ->where('weight', '!=', null)
+                                       ->where('reps' , '!=', null)
+                                       ->where('sets', '!=', null)
+                                       ->get();
+
+      return response()->json($currentExerciseStats);
     }
 
     /**

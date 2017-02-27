@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Workout;
+use App\User;
 
 class Exercise extends Model
 {
@@ -14,5 +15,9 @@ class Exercise extends Model
 
   public function workout(){
   	return $this->belongsTo(Workout::class);
+  }
+
+  public function user(){
+  	return $this->workout->belongsTo(User::class);
   }
 }
